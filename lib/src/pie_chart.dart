@@ -27,6 +27,7 @@ class PieChart extends StatefulWidget {
     this.showLegends = true,
     this.initialAngle = 0.0,
     this.decimalPlaces = 0,
+    this.showChartValuesOutsidePosition = 0.5,
     Key key,
   }) : super(key: key);
 
@@ -86,8 +87,8 @@ class _PieChartState extends State<PieChart>
 
   void initData() {
     assert(
-      widget.dataMap != null && widget.dataMap.isNotEmpty,
-      "dataMap passed to pie chart cant be null or empty",
+    widget.dataMap != null && widget.dataMap.isNotEmpty,
+    "dataMap passed to pie chart cant be null or empty",
     );
     initLegends();
     initValues();
@@ -137,23 +138,23 @@ class _PieChartState extends State<PieChart>
         builder: (_, c) => Container(
           height: widget.chartRadius != null
               ? c.maxWidth < widget.chartRadius
-                  ? c.maxWidth
-                  : widget.chartRadius
+              ? c.maxWidth
+              : widget.chartRadius
               : null,
           child: CustomPaint(
             painter: PieChartPainter(
-              _fraction,
-              widget.showChartValuesOutside,
-              widget.colorList,
-              chartValueStyle: widget.chartValueStyle,
-              chartValueBackgroundColor: widget.chartValueBackgroundColor,
-              values: legendValues,
-              initialAngle: widget.initialAngle,
-              showValuesInPercentage: widget.showChartValuesInPercentage,
-              decimalPlaces: widget.decimalPlaces,
-              showChartValueLabel: widget.showChartValueLabel,
-              chartType: widget.chartType,
-              showChartValuesOutsidePosition: widget.showChartValuesOutsidePosition
+                _fraction,
+                widget.showChartValuesOutside,
+                widget.colorList,
+                chartValueStyle: widget.chartValueStyle,
+                chartValueBackgroundColor: widget.chartValueBackgroundColor,
+                values: legendValues,
+                initialAngle: widget.initialAngle,
+                showValuesInPercentage: widget.showChartValuesInPercentage,
+                decimalPlaces: widget.decimalPlaces,
+                showChartValueLabel: widget.showChartValueLabel,
+                chartType: widget.chartType,
+                showChartValuesOutsidePosition: widget.showChartValuesOutsidePosition
             ),
             child: AspectRatio(aspectRatio: 1),
           ),
@@ -173,13 +174,13 @@ class _PieChartState extends State<PieChart>
             mainAxisSize: MainAxisSize.min,
             children: legendTitles
                 .map((item) => Legend(
-                      title: item,
-                      color: getColor(
-                        widget.colorList,
-                        legendTitles.indexOf(item),
-                      ),
-                      style: widget.legendStyle,
-                    ))
+              title: item,
+              color: getColor(
+                widget.colorList,
+                legendTitles.indexOf(item),
+              ),
+              style: widget.legendStyle,
+            ))
                 .toList(),
           ),
         ),
