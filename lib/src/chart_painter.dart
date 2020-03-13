@@ -17,8 +17,7 @@ class PieChartPainter extends CustomPainter {
   final int decimalPlaces;
   final bool showChartValueLabel;
   final ChartType chartType;
-  final String centerText;
-  final Function formatChartValues;
+  final double showChartValuesOutsidePosition;
 
   double _prevAngle = 0;
 
@@ -33,12 +32,11 @@ class PieChartPainter extends CustomPainter {
     this.showValuesInPercentage,
     this.decimalPlaces,
     this.showChartValueLabel,
-    this.chartType,
-    this.centerText,
-    this.formatChartValues
+    this.chartType, 
+        this.showChartValuesOutsidePosition = 0.5,
   }) {
     for (int i = 0; i < values.length; i++) {
-      final paint = Paint()..color = getColor(colorList, i);
+      final paint = Paint()..color = _getColor(colorList, i);
       if (chartType == ChartType.ring) {
         paint.style = PaintingStyle.stroke;
         paint.strokeWidth = 20;
@@ -62,7 +60,7 @@ class PieChartPainter extends CustomPainter {
         chartType == ChartType.disc ? true : false,
         _paintList[i],
       );
-      final radius = showChartValuesOutside ? side * 0.55 : side / 3;
+      final radius = showChartValuesOutside ? side * showChartValuesOutsidePosition : side / 1;
       final x = (radius) *
           math.cos(
               _prevAngle + ((((_totalAngle) / _total) * _subParts[i]) / 2));
@@ -70,27 +68,24 @@ class PieChartPainter extends CustomPainter {
           math.sin(
               _prevAngle + ((((_totalAngle) / _total) * _subParts[i]) / 2));
       if (_subParts.elementAt(i).toInt() != 0) {
-        final value = formatChartValues != null 
-            ? formatChartValues(_subParts.elementAt(i)) 
-            : _subParts.elementAt(i).toStringAsFixed(this.decimalPlaces);
         final name = showValuesInPercentage
             ? (((_subParts.elementAt(i) / _total) * 100)
                     .toStringAsFixed(this.decimalPlaces) +
                 '%')
-            : value;
+            : _subParts.elementAt(i).toStringAsFixed(this.decimalPlaces);
 
         _drawName(canvas, name, x, y, side);
       }
       _prevAngle = _prevAngle + (((_totalAngle) / _total) * _subParts[i]);
     }
-
-    if (centerText != null && centerText.trim().isNotEmpty) {
-      _drawCenterText(canvas, side);
-    }
   }
 
-  void _drawCenterText(Canvas canvas, double side) {
-    _drawName(canvas, centerText, 0, 0, side);
+  Color _getColor(List<Color> colorList, int index) {
+    if (index > (colorList.length - 1)) {
+      var newIndex = index % (colorList.length - 1);
+      return colorList.elementAt(newIndex);
+    } else
+      return colorList.elementAt(index);
   }
 
   void _drawName(Canvas canvas, String name, double x, double y, double side) {
