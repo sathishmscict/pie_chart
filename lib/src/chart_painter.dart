@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:myvoicetoday/pie_chart/src/pie_chart.dart';
+
 
 class PieChartPainter extends CustomPainter {
   List<Paint> _paintList = [];
@@ -22,19 +23,19 @@ class PieChartPainter extends CustomPainter {
   double _prevAngle = 0;
 
   PieChartPainter(
-    double angleFactor,
-    this.showChartValuesOutside,
-    List<Color> colorList, {
-    this.chartValueStyle,
-    this.chartValueBackgroundColor,
-    List<double> values,
-    this.initialAngle,
-    this.showValuesInPercentage,
-    this.decimalPlaces,
-    this.showChartValueLabel,
-    this.chartType, 
-        this.showChartValuesOutsidePosition = 0.5,
-  }) {
+      double angleFactor,
+      this.showChartValuesOutside,
+      List<Color> colorList, {
+        this.chartValueStyle,
+        this.chartValueBackgroundColor,
+        List<double> values,
+        this.initialAngle,
+        this.showValuesInPercentage,
+        this.decimalPlaces,
+        this.showChartValueLabel,
+        this.chartType,
+        this.showChartValuesOutsidePosition,
+      }) {
     for (int i = 0; i < values.length; i++) {
       final paint = Paint()..color = _getColor(colorList, i);
       if (chartType == ChartType.ring) {
@@ -70,8 +71,8 @@ class PieChartPainter extends CustomPainter {
       if (_subParts.elementAt(i).toInt() != 0) {
         final name = showValuesInPercentage
             ? (((_subParts.elementAt(i) / _total) * 100)
-                    .toStringAsFixed(this.decimalPlaces) +
-                '%')
+            .toStringAsFixed(this.decimalPlaces) +
+            '%')
             : _subParts.elementAt(i).toStringAsFixed(this.decimalPlaces);
 
         _drawName(canvas, name, x, y, side);
